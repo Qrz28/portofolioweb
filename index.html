@@ -1,295 +1,532 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio - Siswa & Anggota OSIS</title>
+    <meta name="description" content="Portofolio siswa SMK dan anggota OSIS dengan tampilan modern, rapi, dan profesional. Menampilkan pengalaman organisasi, prestasi akademik, dan projek kreatif.">
+    <meta name="keywords" content="portofolio siswa, SMK, OSIS, organisasi sekolah, prestasi akademik, projek pelajar, leadership">
+    <meta name="author" content="Nama Siswa">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://yourwebsite.com">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourwebsite.com">
+    <meta property="og:title" content="Portofolio Siswa SMK & OSIS - Modern & Profesional">
+    <meta property="og:description" content="Portofolio siswa SMK dan anggota OSIS dengan tampilan modern, rapi, dan profesional. Menampilkan pengalaman organisasi, prestasi akademik, dan projek kreatif.">
+    <meta property="og:image" content="https://yourwebsite.com/og-image.jpg">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://yourwebsite.com">
+    <meta name="twitter:title" content="Portofolio Siswa SMK & OSIS - Modern & Profesional">
+    <meta name="twitter:description" content="Portofolio siswa SMK dan anggota OSIS dengan tampilan modern, rapi, dan profesional.">
+    <meta name="twitter:image" content="https://yourwebsite.com/og-image.jpg">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    
+    <title>Portofolio Siswa SMK & OSIS - Modern & Profesional</title>
+    
+    <!-- Resource Hints for Performance -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Nama Siswa",
+        "jobTitle": "Siswa SMK & Anggota OSIS",
+        "description": "Siswa SMK yang aktif di organisasi sekolah dan berprestasi secara akademik",
+        "url": "https://yourwebsite.com",
+        "sameAs": [
+            "https://github.com/yourusername",
+            "https://linkedin.com/in/yourusername",
+            "https://instagram.com/yourusername"
+        ],
+        "knowsAbout": ["Leadership", "Organisasi", "Web Development", "UI/UX Design"]
+    }
+    </script>
+    
+    <!-- CSS -->
     <link rel="stylesheet" href="style.css">
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-<body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="container">
-            <a href="#home" class="logo">Portfolio</a>
-            <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">Tentang Saya</a></li>
-                <li><a href="#osis">Aktivitas OSIS</a></li>
-                <li><a href="#projects">Projek & Prestasi</a></li>
-                <li><a href="#contact">Kontak</a></li>
-            </ul>
-            <div class="hamburger" aria-label="Toggle navigation menu">
-                <span></span>
-                <span></span>
-                <span></span>
+<body class="loading">
+    <!-- Skip to Content Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Lompat ke konten utama</a>
+    
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="loader-content">
+            <div class="loader-logo">Portofolio<span>.</span></div>
+            <div class="loader-progress-bar"><div class="loader-progress-fill"></div></div>
+        </div>
+    </div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Animated Background -->
+    <div class="bg-animated">
+        <div class="bg-shape shape-1"></div>
+        <div class="bg-shape shape-2"></div>
+        <div class="particles-container" id="particles"></div>
+    </div>
+
+    <div class="site-shell">
+        <header class="navbar">
+            <div class="container navbar-inner">
+                <a href="#home" class="logo">Portofolio<span>.</span></a>
+                
+                <div class="nav-right">
+                    <nav>
+                        <ul class="nav-links" id="navMenu" role="menubar">
+                            <li role="none"><a href="#home" role="menuitem">Beranda</a></li>
+                            <li role="none"><a href="#about" role="menuitem">Profil</a></li>
+                            <li role="none"><a href="#skills" role="menuitem">Keahlian</a></li>
+                            <li role="none"><a href="#osis" role="menuitem">Organisasi</a></li>
+                            <li role="none"><a href="#projects" role="menuitem">Projek</a></li>
+                            <li role="none"><a href="#contact" role="menuitem">Kontak</a></li>
+                        </ul>
+                    </nav>
+                    
+                    <button id="themeToggle" class="theme-toggle" aria-label="Toggle Theme">
+                        <i class="fas fa-sun light-icon"></i>
+                        <i class="fas fa-moon dark-icon"></i>
+                    </button>
+                    
+                    <button class="hamburger" type="button" aria-label="Buka menu navigasi" aria-expanded="false" aria-controls="navMenu" aria-haspopup="true">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main id="main-content">
+            <section id="home" class="hero">
+                <div class="container hero-content">
+                    <div class="hero-text">
+                        <span class="eyebrow">
+                            <i class="fas fa-code"></i> <span class="typing-text">Siswa SMK | Aktif Organisasi</span>
+                        </span>
+                        <h1 class="hero-title">Membangun citra diri yang rapi, profesional, dan siap tampil meyakinkan.</h1>
+                        <p class="hero-description">
+                            Halaman ini dirancang sebagai portofolio siswa yang aktif di sekolah, berpengalaman di kegiatan OSIS,
+                            dan memiliki semangat belajar tinggi untuk pengembangan akademik maupun non-akademik.
+                        </p>
+                        <div class="hero-actions">
+                            <a href="#projects" class="btn btn-primary magnetic" data-strength="20">Lihat Portofolio</a>
+                            <a href="#contact" class="btn btn-secondary magnetic" data-strength="20">Hubungi Saya</a>
+                        </div>
+                        <div class="hero-metrics">
+                            <div class="metric-chip">
+                                <strong class="counter" data-target="2">0</strong>
+                                <span>Tahun aktif</span>
+                            </div>
+                            <div class="metric-chip">
+                                <strong class="counter" data-target="12">0</strong>
+                                <span>Program</span>
+                            </div>
+                            <div class="metric-chip">
+                                <strong class="counter" data-target="6">0</strong>
+                                <span>Prestasi</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hero-visual">
+                        <div class="profile-card tilt-effect">
+                            <div class="profile-badge">
+                                <span>SMK</span>
+                            </div>
+                            <p class="profile-role">Portofolio Personal</p>
+                            <h2>Siswa yang aktif, adaptif, dan bertanggung jawab</h2>
+                            <p class="profile-copy">
+                                Cocok digunakan untuk menampilkan profil sekolah, pengalaman organisasi,
+                                pencapaian, dan kontak secara lebih elegan.
+                            </p>
+                            <div class="profile-highlights">
+                                <div><i class="fas fa-user-graduate"></i><span>Siap diisi identitas asli</span></div>
+                                <div><i class="fas fa-people-group"></i><span>Fokus pada kepemimpinan</span></div>
+                                <div><i class="fas fa-award"></i><span>Menonjolkan pencapaian</span></div>
+                            </div>
+                        </div>
+                        <div class="floating-card floating-card-top parallax" data-speed="0.05">
+                            <span>Organisasi</span>
+                            <strong>Koordinasi acara sekolah</strong>
+                        </div>
+                        <div class="floating-card floating-card-bottom parallax" data-speed="-0.03">
+                            <span>Prestasi</span>
+                            <strong>Belajar, berkontribusi, berkembang</strong>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="about" class="section">
+                <div class="container">
+                    <div class="section-heading reveal">
+                        <span class="section-kicker">Profil Singkat</span>
+                        <h2 class="section-title">Tentang saya dan arah pengembangan</h2>
+                        <p class="section-subtitle">Susunan konten ini dibuat agar lebih enak dibaca, lebih meyakinkan, dan mudah Anda ganti nanti dengan data pribadi.</p>
+                    </div>
+
+                    <div class="about-grid">
+                        <article class="about-panel reveal stagger-item">
+                            <span class="panel-label">Ringkasan</span>
+                            <h3>Siswa SMK yang aktif di sekolah dan organisasi</h3>
+                            <p>Saya adalah siswa yang terbiasa bekerja dengan target, disiplin dalam tanggung jawab, dan nyaman berkolaborasi bersama tim. Pengalaman di lingkungan sekolah dan organisasi membantu saya memahami pentingnya komunikasi, kepemimpinan, serta manajemen waktu.</p>
+                        </article>
+
+                        <aside class="about-panel reveal stagger-item">
+                            <span class="panel-label">Fokus Utama</span>
+                            <div class="focus-list">
+                                <div class="focus-item">
+                                    <i class="fas fa-layer-group"></i>
+                                    <div>
+                                        <h3>Struktur lebih jelas</h3>
+                                        <p>Bagian profil, organisasi, prestasi, dan kontak dipisah lebih tegas.</p>
+                                    </div>
+                                </div>
+                                <div class="focus-item">
+                                    <i class="fas fa-wand-magic-sparkles"></i>
+                                    <div>
+                                        <h3>Tampilan premium</h3>
+                                        <p>Warna, spasi, kartu, dan tipografi disusun agar terasa elegan.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SKILLS SECTION [NEW] -->
+            <section id="skills" class="section section-alt">
+                <div class="container">
+                    <div class="section-heading reveal">
+                        <span class="section-kicker">Keahlian</span>
+                        <h2 class="section-title">Teknologi & Kompetensi</h2>
+                        <p class="section-subtitle">Keahlian teknis dan non-teknis yang terus saya kembangkan.</p>
+                    </div>
+
+                    <div class="skills-grid reveal">
+                        <div class="skill-item">
+                            <div class="skill-info">
+                                <span class="skill-name"><i class="fab fa-html5"></i> HTML/CSS</span>
+                                <span class="skill-percentage">90%</span>
+                            </div>
+                            <div class="skill-bar-bg">
+                                <div class="skill-bar-fill" data-width="90%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-info">
+                                <span class="skill-name"><i class="fab fa-js"></i> JavaScript</span>
+                                <span class="skill-percentage">75%</span>
+                            </div>
+                            <div class="skill-bar-bg">
+                                <div class="skill-bar-fill" data-width="75%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-info">
+                                <span class="skill-name"><i class="fas fa-users"></i> Leadership & Komunikasi</span>
+                                <span class="skill-percentage">85%</span>
+                            </div>
+                            <div class="skill-bar-bg">
+                                <div class="skill-bar-fill" data-width="85%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-info">
+                                <span class="skill-name"><i class="fas fa-palette"></i> UI/UX Design</span>
+                                <span class="skill-percentage">80%</span>
+                            </div>
+                            <div class="skill-bar-bg">
+                                <div class="skill-bar-fill" data-width="80%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="osis" class="section">
+                <div class="container">
+                    <div class="section-heading reveal">
+                        <span class="section-kicker">Pengalaman Organisasi</span>
+                        <h2 class="section-title">Aktivitas OSIS yang terarah</h2>
+                    </div>
+
+                    <div class="osis-grid">
+                        <article class="feature-card reveal stagger-item tilt-effect">
+                            <div class="feature-icon"><i class="fas fa-calendar-check"></i></div>
+                            <h3>Koordinasi acara sekolah</h3>
+                            <p>Mendukung perencanaan, persiapan, dan pelaksanaan acara sekolah agar berjalan tertib.</p>
+                        </article>
+                        <article class="feature-card reveal stagger-item tilt-effect">
+                            <div class="feature-icon"><i class="fas fa-users-gear"></i></div>
+                            <h3>Kerja tim dan kepanitiaan</h3>
+                            <p>Terbiasa berkolaborasi dengan panitia lain, membagi tugas, dan menjaga komunikasi.</p>
+                        </article>
+                        <article class="feature-card reveal stagger-item tilt-effect">
+                            <div class="feature-icon"><i class="fas fa-bullhorn"></i></div>
+                            <h3>Komunikasi dan sosialisasi</h3>
+                            <p>Aktif menyampaikan informasi program dan menjembatani kebutuhan siswa.</p>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <section id="projects" class="section section-alt">
+                <div class="container">
+                    <div class="section-heading reveal">
+                        <span class="section-kicker">Portofolio Pilihan</span>
+                        <h2 class="section-title">Projek & Pencapaian</h2>
+                    </div>
+
+                    <div class="projects-grid">
+                        <article class="project-card reveal stagger-item tilt-effect open-modal" data-modal="modal-1">
+                            <div class="project-cover project-cover-blue">
+                                <span>Prestasi Akademik</span>
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <div class="project-content">
+                                <span class="project-tag">Unggulan</span>
+                                <h3>Prestasi belajar akademik</h3>
+                                <p>Klik untuk melihat detail pencapaian akademik dan penghargaan yang pernah diraih.</p>
+                                <div class="project-tech-badges">
+                                    <span class="tech-badge">Juara 1</span>
+                                    <span class="tech-badge">Olimpiade</span>
+                                    <span class="tech-badge">Sertifikat</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="project-card reveal stagger-item tilt-effect open-modal" data-modal="modal-2">
+                            <div class="project-cover project-cover-green">
+                                <span>Pengalaman Praktik</span>
+                                <i class="fas fa-briefcase"></i>
+                            </div>
+                            <div class="project-content">
+                                <span class="project-tag">PKL</span>
+                                <h3>Praktik kerja lapangan (PKL)</h3>
+                                <p>Klik untuk melihat detail pengalaman PKL, teknologi yang digunakan, dan hasil karya.</p>
+                                <div class="project-tech-badges">
+                                    <span class="tech-badge">HTML</span>
+                                    <span class="tech-badge">CSS</span>
+                                    <span class="tech-badge">JavaScript</span>
+                                    <span class="tech-badge">Git</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="project-card reveal stagger-item tilt-effect open-modal" data-modal="modal-3">
+                            <div class="project-cover project-cover-purple">
+                                <span>Organisasi</span>
+                                <i class="fas fa-people-roof"></i>
+                            </div>
+                            <div class="project-content">
+                                <span class="project-tag">OSIS</span>
+                                <h3>Kepemimpinan Acara</h3>
+                                <p>Klik untuk melihat detail kegiatan dan program kerja yang sukses diselenggarakan.</p>
+                                <div class="project-tech-badges">
+                                    <span class="tech-badge">Leadership</span>
+                                    <span class="tech-badge">Manajemen</span>
+                                    <span class="tech-badge">Komunikasi</span>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <section id="contact" class="section">
+                <div class="container">
+                    <div class="contact-shell">
+                        <div class="contact-copy reveal">
+                            <span class="section-kicker">Kontak</span>
+                            <h2 class="section-title">Mari Berkolaborasi</h2>
+                            
+                            <div class="contact-list">
+                                <div class="contact-item magnetic" data-strength="10">
+                                    <i class="fas fa-envelope"></i>
+                                    <div><h3>Email</h3><p>nama@sekolah.sch.id</p></div>
+                                </div>
+                                <div class="contact-item magnetic" data-strength="10">
+                                    <i class="fab fa-instagram"></i>
+                                    <div><h3>Instagram</h3><p>@usernameanda</p></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="contact-form-wrap reveal tilt-effect">
+                            <div class="form-panel glass-panel">
+                                <h3>Kirim pesan</h3>
+                                <form id="contactForm" class="contact-form" aria-label="Formulir kontak">
+                                    <div class="form-group">
+                                        <label for="name" class="visually-hidden">Nama Anda</label>
+                                        <input type="text" id="name" name="name" placeholder="Nama Anda" required aria-required="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email" class="visually-hidden">Email Anda</label>
+                                        <input type="email" id="email" name="email" placeholder="Email Anda" required aria-required="true">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="message" class="visually-hidden">Pesan Anda</label>
+                                        <textarea id="message" name="message" rows="4" placeholder="Pesan Anda" required aria-required="true"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-block magnetic" data-strength="15" aria-label="Kirim pesan">Kirim Pesan</button>
+                                    <p class="form-note" id="formMessage" role="status" aria-live="polite"></p>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <div class="container footer-content">
+                <div class="footer-brand-wrap">
+                    <a href="#home" class="footer-brand">Portofolio.</a>
+                    <p>Desain modern, premium, dan siap dipersonalisasi.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="https://github.com" target="_blank" class="magnetic" data-strength="10"><i class="fab fa-github"></i></a>
+                    <a href="https://linkedin.com" target="_blank" class="magnetic" data-strength="10"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://instagram.com" target="_blank" class="magnetic" data-strength="10"><i class="fab fa-instagram"></i></a>
+                </div>
+                <button class="back-to-top magnetic" id="backToTop" data-strength="15" aria-label="Kembali ke atas">
+                    <i class="fas fa-arrow-up"></i>
+                </button>
+            </div>
+            <div class="container footer-bottom">
+                <p>&copy; <span id="currentYear"></span> Portofolio Siswa. Semua hak cipta dilindungi.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal-overlay" id="modal-1" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+        <div class="modal-content glass-panel">
+            <button class="close-modal" aria-label="Tutup modal"><i class="fas fa-times"></i></button>
+            <div class="modal-image bg-blue">
+                <div class="modal-image-content">
+                    <i class="fas fa-trophy fa-3x"></i>
+                </div>
+            </div>
+            <h3 id="modal-1-title">Prestasi belajar akademik</h3>
+            <p>Detail tentang pencapaian akademik yang menonjol, sertifikat, atau kompetisi yang pernah diikuti selama di SMK. Mencakup berbagai bidang studi dan prestasi lomba.</p>
+            <div class="modal-features">
+                <div class="modal-feature">
+                    <i class="fas fa-medal"></i>
+                    <span>Juara 1 Olimpiade Matematika</span>
+                </div>
+                <div class="modal-feature">
+                    <i class="fas fa-certificate"></i>
+                    <span>Sertifikat Keunggulan</span>
+                </div>
+                <div class="modal-feature">
+                    <i class="fas fa-star"></i>
+                    <span>IPK 3.8+</span>
+                </div>
+            </div>
+            <div class="modal-tags">
+                <span>Juara 1</span><span>Olimpiade</span><span>Akademik</span>
+            </div>
+            <div class="modal-actions">
+                <a href="#" class="btn btn-primary magnetic" data-strength="15">Lihat Sertifikat</a>
             </div>
         </div>
-    </nav>
+    </div>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <div class="hero-text">
-                <h1>Halo, Saya <span class="highlight">Nama Anda</span></h1>
-                <p class="tagline">Siswa SMK & Anggota OSIS</p>
-                <p class="hero-description">Memiliki passion dalam organisasi, kepemimpinan, dan pengembangan diri untuk masa depan yang lebih baik.</p>
-                <a href="#about" class="btn btn-primary">Tentang Saya</a>
-                <a href="#contact" class="btn btn-secondary">Hubungi Saya</a>
-            </div>
-            <div class="hero-image">
-                <div class="profile-container">
-                    <div class="profile-placeholder">
-                        <i class="fas fa-user"></i>
-                    </div>
+    <div class="modal-overlay" id="modal-2" role="dialog" aria-modal="true" aria-labelledby="modal-2-title">
+        <div class="modal-content glass-panel">
+            <button class="close-modal" aria-label="Tutup modal"><i class="fas fa-times"></i></button>
+            <div class="modal-image bg-green">
+                <div class="modal-image-content">
+                    <i class="fas fa-briefcase fa-3x"></i>
                 </div>
             </div>
-        </div>
-        <div class="scroll-down">
-            <a href="#about">
-                <i class="fas fa-chevron-down"></i>
-            </a>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="section">
-        <div class="container">
-            <h2 class="section-title">Tentang Saya</h2>
-            <div class="about-content">
-                <div class="about-text">
-                    <h3>Siswa SMK & Anggota OSIS Berprestasi</h3>
-                    <p>Saya adalah siswa di <strong>[Nama Sekolah]</strong> yang berfokus pada pengembangan keterampilan di bidang <strong>[Jurusan]</strong>. Sebagai anggota OSIS, saya aktif berkontribusi dalam berbagai kegiatan sekolah dengan penuh tanggung jawab dan dedikasi.</p>
-                    <p>Memiliki minat dalam kepemimpinan, kerja tim, dan pembelajaran berkelanjutan. Melalui kegiatan OSIS, saya berkomitmen memberikan dampak positif bagi teman-teman sekolah dan komunitas sekitar.</p>
-                    <div class="about-stats">
-                        <div class="stat-item">
-                            <span class="stat-number">2+</span>
-                            <span class="stat-label">Tahun di OSIS</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-number">10+</span>
-                            <span class="stat-label">Acara Diselenggarakan</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-number">5+</span>
-                            <span class="stat-label">Projek Selesai</span>
-                        </div>
-                    </div>
+            <h3 id="modal-2-title">Praktik kerja lapangan (PKL)</h3>
+            <p>Pengalaman magang di industri, menyelesaikan proyek nyata, dan berkolaborasi dalam tim profesional. Membangun aplikasi web responsif dengan teknologi modern.</p>
+            <div class="modal-features">
+                <div class="modal-feature">
+                    <i class="fas fa-code"></i>
+                    <span>Frontend Development</span>
                 </div>
+                <div class="modal-feature">
+                    <i class="fas fa-users"></i>
+                    <span>Team Collaboration</span>
+                </div>
+                <div class="modal-feature">
+                    <i class="fas fa-check-circle"></i>
+                    <span>3 Proyek Selesai</span>
+                </div>
+            </div>
+            <div class="modal-tags">
+                <span>HTML</span><span>CSS</span><span>JavaScript</span><span>Git</span>
+            </div>
+            <div class="modal-actions">
+                <a href="#" class="btn btn-primary magnetic" data-strength="15">Live Demo</a>
+                <a href="#" class="btn btn-secondary magnetic" data-strength="15">GitHub</a>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- OSIS Activities Section -->
-    <section id="osis" class="section bg-light">
-        <div class="container">
-            <h2 class="section-title">Aktivitas OSIS</h2>
-            <p class="section-subtitle">Program kerja dan kegiatan yang saya ikuti selama menjadi anggota OSIS</p>
-            <div class="osis-grid">
-                <div class="osis-card">
-                    <div class="osis-icon">
-                        <i class="fas fa-calendar-alt"></i>
-                    </div>
-                    <h3>Acara Sekolah</h3>
-                    <p>Mengkoordinir dan berpartisipasi dalam berbagai acara sekolah seperti ulang tahun sekolah, peringatan hari besar nasional, dan kegiatan ekstrakurikuler.</p>
+    <div class="modal-overlay" id="modal-3" role="dialog" aria-modal="true" aria-labelledby="modal-3-title">
+        <div class="modal-content glass-panel">
+            <button class="close-modal" aria-label="Tutup modal"><i class="fas fa-times"></i></button>
+            <div class="modal-image bg-purple">
+                <div class="modal-image-content">
+                    <i class="fas fa-people-roof fa-3x"></i>
                 </div>
-                <div class="osis-card">
-                    <div class="osis-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h3>Kepanitiaan</h3>
-                    <p>Menjadi panitia dalam kegiatan seperti MPLS, latihan gabungan, kegiatan organisasi, dan event sekolah lainnya dengan tanggung jawab penuh.</p>
+            </div>
+            <h3 id="modal-3-title">Kepemimpinan Acara</h3>
+            <p>Bertanggung jawab penuh atas kelancaran acara sekolah tahunan. Memimpin kepanitiaan yang beranggotakan 50+ siswa dan mengkoordinasikan berbagai divisi.</p>
+            <div class="modal-features">
+                <div class="modal-feature">
+                    <i class="fas fa-user-tie"></i>
+                    <span>Ketua Panitia</span>
                 </div>
-                <div class="osis-card">
-                    <div class="osis-icon">
-                        <i class="fas fa-bullhorn"></i>
-                    </div>
-                    <h3>Sosialisasi</h3>
-                    <p>Mengikuti dan membantu kegiatan sosialisasi program OSIS kepada siswa baru dan teman-teman sekelas.</p>
+                <div class="modal-feature">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Acara Berhasil</span>
                 </div>
-                <div class="osis-card">
-                    <div class="osis-icon">
-                        <i class="fas fa-hands-helping"></i>
-                    </div>
-                    <h3>Bakti Sosial</h3>
-                    <p>Berpartisipasi dalam kegiatan bakti sosial seperti pengumpulan dana, bantuan bencana, dan kepedulian lingkungan.</p>
+                <div class="modal-feature">
+                    <i class="fas fa-users-gear"></i>
+                    <span>50+ Anggota Tim</span>
                 </div>
-                <div class="osis-card">
-                    <div class="osis-icon">
-                        <i class="fas fa-clipboard-list"></i>
-                    </div>
-                    <h3>Administration</h3>
-                    <p>Membantu tugas-tugas administrasi OSIS seperti dokumentasi, laporan kegiatan, dan pengelolaan data anggota.</p>
-                </div>
-                <div class="osis-card">
-                    <div class="osis-icon">
-                        <i class="fas fa-lightbulb"></i>
-                    </div>
-                    <h3>Pengembangan Program</h3>
-                    <p>Ikut andil dalam merancang dan mengembangkan program kerja baru untuk kemajuan OSIS dan sekolah.</p>
-                </div>
+            </div>
+            <div class="modal-tags">
+                <span>Leadership</span><span>Manajemen</span><span>Koordinasi</span>
+            </div>
+            <div class="modal-actions">
+                <a href="#" class="btn btn-primary magnetic" data-strength="15">Lihat Galeri</a>
             </div>
         </div>
-    </section>
+    </div>
 
-
-    <!-- Projects & Achievements Section -->
-    <section id="projects" class="section bg-light">
-        <div class="container">
-            <h2 class="section-title">Projek & Prestasi</h2>
-            <p class="section-subtitle">Projek sekolah dan prestasi yang telah dicapai</p>
-            <div class="projects-grid">
-                <div class="project-card">
-                    <div class="project-image">
-                        <i class="fas fa-trophy"></i>
-                    </div>
-                    <div class="project-content">
-                        <span class="project-tag">Prestasi</span>
-                        <h3>Juara Kelas</h3>
-                        <p>Memperoleh prestasi sebagai siswa terbaik di kelas pada semester ganjil tahun ajaran 2023/2024.</p>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-image">
-                        <i class="fas fa-project-diagram"></i>
-                    </div>
-                    <div class="project-content">
-                        <span class="project-tag">Projek</span>
-                        <h3>Program PKL</h3>
-                        <p>Menyelesaikan program PKL di <strong>[Nama Tempat PKL]</strong> dengan hasil yang memuaskan dan mendapat evaluasi yang sangat baik.</p>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-image">
-                        <i class="fas fa-calendar-check"></i>
-                    </div>
-                    <div class="project-content">
-                        <span class="project-tag">Organisasi</span>
-                        <h3>Panitia Acara Sekolah</h3>
-                        <p>Menjadi ketua/wakil panitia dalam berbagai acara sekolah seperti peringatan hari besar dan acara tahunan.</p>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-image">
-                        <i class="fas fa-medal"></i>
-                    </div>
-                    <div class="project-content">
-                        <span class="project-tag">Prestasi</span>
-                        <h3>Juara Lomba</h3>
-                        <p>Mengikuti dan mendapatkan prestasi dalam berbagai kompetisi baik di tingkat sekolah maupun luar sekolah.</p>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-image">
-                        <i class="fas fa-handshake"></i>
-                    </div>
-                    <div class="project-content">
-                        <span class="project-tag">Organisasi</span>
-                        <h3>Volunteer Kegiatan</h3>
-                        <p>Aktif menjadi volunteer dalam berbagai kegiatan sekolah dan komunitas sekitar.</p>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-image">
-                        <i class="fas fa-certificate"></i>
-                    </div>
-                    <div class="project-content">
-                        <span class="project-tag">Sertifikat</span>
-                        <h3>Sertifikat Pelatihan</h3>
-                        <p>Mengikuti berbagai pelatihan dan workshop untuk meningkatkan keterampilan diri.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="section">
-        <div class="container">
-            <h2 class="section-title">Kontak</h2>
-            <p class="section-subtitle">Tertarik untuk berkomunikasi? Silakan hubungi saya melalui informasi di bawah ini</p>
-            <div class="contact-content">
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <div class="contact-details">
-                            <h3>Email</h3>
-                            <p>email@sekolah.sch.id</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-phone"></i>
-                        </div>
-                        <div class="contact-details">
-                            <h3>Telepon</h3>
-                            <p>+62 8xx xxxx xxxx</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <div class="contact-details">
-                            <h3>Lokasi</h3>
-                            <p>[Kota], [Provinsi]</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fab fa-instagram"></i>
-                        </div>
-                        <div class="contact-details">
-                            <h3>Instagram</h3>
-                            <p>@username</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="contact-form">
-                    <h3>Kirim Pesan</h3>
-                    <form id="contactForm">
-                        <div class="form-group">
-                            <input type="text" id="name" name="name" placeholder="Nama Anda" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" id="email" name="email" placeholder="Email Anda" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" id="subject" name="subject" placeholder="Subjek">
-                        </div>
-                        <div class="form-group">
-                            <textarea id="message" name="message" placeholder="Pesan Anda" rows="5" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Kirim Pesan</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">
-                    <h3>Portfolio</h3>
-                    <p>Siswa SMK & Anggota OSIS</p>
-                </div>
-                <div class="footer-social">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-whatsapp"></i></a>
-                    <a href="#"><i class="fab fa-tiktok"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 Portfolio. Dibuat dengan ❤️ oleh Siswa SMK</p>
-            </div>
-        </div>
-    </footer>
-
+    <!-- External Libraries (CDN) -->
+    <!-- GSAP for Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <!-- GSAP ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <!-- Lenis for Smooth Scrolling -->
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+    
+    <!-- Main Script -->
     <script src="script.js"></script>
 </body>
 </html>

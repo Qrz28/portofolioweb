@@ -1,666 +1,617 @@
-/* ============================================
-   MODERN PORTFOLIO - ENHANCED ANIMATIONS
-   ============================================ */
-
-// ============================================
-// Device Detection
-// ============================================
-const isMobile = () => window.innerWidth <= 768;
-
-// ============================================
-// 0.5 Falling Stars Animation in Hero
-// ============================================
-function createFallingStars() {
-    const hero = document.querySelector('.hero');
-    if (!hero) return;
-
-    // Create initial static stars (twinkling)
-    const staticStarCount = 30;
-    for (let i = 0; i < staticStarCount; i++) {
-        const star = document.createElement('div');
-        star.className = 'star twinkle';
-        
-        const size = Math.random() > 0.7 ? 'large' : Math.random() > 0.5 ? 'medium' : 'small';
-        star.classList.add(size);
-        
-        if (Math.random() > 0.6) {
-            const twinkleSpeed = Math.random() > 0.5 ? 'twinkle-slow' : 'twinkle-fast';
-            star.classList.remove('twinkle');
-            star.classList.add(twinkleSpeed);
+document.addEventListener("DOMContentLoaded", () => {
+    // ============================================
+    // UTILITY FUNCTIONS
+    // ============================================
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    // Debounce function for performance
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+    
+    // Throttle function for scroll events
+    function throttle(func, limit) {
+        let inThrottle;
+        return function(...args) {
+            if (!inThrottle) {
+                func.apply(this, args);
+                inThrottle = true;
+                setTimeout(() => inThrottle = false, limit);
+            }
+        };
+    }
+    
+    // Safe element selector with error handling
+    function safeSelect(selector) {
+        try {
+            return document.querySelector(selector);
+        } catch (error) {
+            console.warn(`Selector error: ${selector}`, error);
+            return null;
         }
-        
-        const top = Math.random() * 80; // 0-80% height
-        const left = Math.random() * 100;
-        const delay = Math.random() * 2;
-        
-        star.style.top = top + '%';
-        star.style.left = left + '%';
-        star.style.animationDelay = delay + 's';
-        
-        hero.appendChild(star);
     }
     
-    // Create falling stars periodically
-    function createFallingStar() {
-        const star = document.createElement('div');
-        star.className = 'star falling';
-        
-        const size = Math.random() > 0.8 ? 'large' : Math.random() > 0.6 ? 'medium' : 'small';
-        star.classList.add(size);
-        
-        const startLeft = Math.random() * 100;
-        const duration = 5000 + Math.random() * 5000; // 5-10 seconds
-        
-        star.style.left = startLeft + '%';
-        star.style.top = '-50px';
-        star.style.animationDuration = duration + 'ms';
-        
-        hero.appendChild(star);
-        
-        // Remove star after animation completes
-        setTimeout(() => {
-            star.remove();
-        }, duration);
+    // Safe selector all with error handling
+    function safeSelectAll(selector) {
+        try {
+            return document.querySelectorAll(selector);
+        } catch (error) {
+            console.warn(`Selector error: ${selector}`, error);
+            return [];
+        }
     }
+
+    // ============================================
+    // 1. THEME SWITCHER
+    // ============================================
+    const themeToggle = safeSelect('#themeToggle');
+    const htmlElement = document.documentElement;
     
-    // Create falling stars every 0.3-1 second
-    if (!isMobile()) {
-        setInterval(() => {
-            createFallingStar();
-        }, 300 + Math.random() * 1000);
-    } else {
-        // Slower on mobile for performance
-        setInterval(() => {
-            createFallingStar();
-        }, 1000 + Math.random() * 1500);
-    }
-}
+    try {
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        htmlElement.setAttribute('data-theme', savedTheme);
 
-// Initialize falling stars on load
-document.addEventListener('DOMContentLoaded', createFallingStars);
-
-// ============================================
-// 1. Mobile Menu Toggle with Animation
-// ============================================
-const hamburger = document.querySelector('.hamburger');
-const navLinks = document.querySelector('.nav-links');
-
-hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    navLinks.classList.toggle('active');
-    
-    // Animate nav links when menu opens
-    if (navLinks.classList.contains('active')) {
-        animateNavLinks();
-    }
-});
-
-function animateNavLinks() {
-    const links = navLinks.querySelectorAll('a');
-    links.forEach((link, index) => {
-        link.style.opacity = '0';
-        link.style.transform = 'translateX(30px)';
-        setTimeout(() => {
-            link.style.transition = 'all 0.3s ease';
-            link.style.opacity = '1';
-            link.style.transform = 'translateX(0)';
-        }, 100 * index);
-    });
-}
-
-// Close mobile menu when clicking on a link
-document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', () => {
-        hamburger.classList.remove('active');
-        navLinks.classList.remove('active');
-    });
-});
-
-// ============================================
-// 2. Smooth Scrolling for Navigation Links
-// ============================================
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            const offsetTop = target.offsetTop - 80;
-            window.scrollTo({
-                top: offsetTop,
-                behavior: 'smooth'
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = htmlElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                htmlElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
             });
         }
-    });
-});
-
-// ============================================
-// 3. Navbar - Glassmorphism & Background Change
-// ============================================
-const navbar = document.querySelector('.navbar');
-
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
-    } else {
-        navbar.classList.remove('scrolled');
+    } catch (error) {
+        console.warn('Theme switcher initialization failed:', error);
     }
-});
 
-// ============================================
-// 4. Hero Section - Entrance Animations
-// ============================================
-document.addEventListener('DOMContentLoaded', () => {
-    // Animate hero elements on page load
-    const heroText = document.querySelector('.hero-text');
-    const heroImage = document.querySelector('.hero-image');
-    
-    if (heroText) {
-        heroText.style.opacity = '0';
-        heroText.style.transform = 'translateX(-50px)';
-        setTimeout(() => {
-            heroText.style.transition = 'all 1s ease';
-            heroText.style.opacity = '1';
-            heroText.style.transform = 'translateX(0)';
-        }, 200);
-    }
-    
-    if (heroImage) {
-        heroImage.style.opacity = '0';
-        heroImage.style.transform = 'translateX(50px)';
-        setTimeout(() => {
-            heroImage.style.transition = 'all 1s ease';
-            heroImage.style.opacity = '1';
-            heroImage.style.transform = 'translateX(0)';
-        }, 500);
-    }
-});
+    // ============================================
+    // 2. LENIS SMOOTH SCROLLING
+    // ============================================
+    let lenis;
+    try {
+        lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+        });
 
-// ============================================
-// 5. Scroll Reveal - Staggered Animations
-// ============================================
-const revealElements = document.querySelectorAll('.osis-card, .project-card, .skill-item, .contact-item, .stat-item');
-
-const revealOnScroll = () => {
-    const windowHeight = window.innerHeight;
-    const elementVisible = 80;
-
-    revealElements.forEach((element, index) => {
-        const elementTop = element.getBoundingClientRect().top;
-        
-        if (elementTop < windowHeight - elementVisible) {
-            // Add staggered delay
-            setTimeout(() => {
-                element.style.opacity = '1';
-                element.style.transform = 'translateY(0)';
-            }, index * 50); // 50ms stagger
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
         }
-    });
-};
+        requestAnimationFrame(raf);
 
-// Set initial state for animation
-revealElements.forEach((element, index) => {
-    element.style.opacity = '0';
-    element.style.transform = 'translateY(40px)';
-    element.style.transition = 'all 0.6s cubic-bezier(0.5, 0, 0, 1)';
-    element.style.transitionDelay = `${index * 0.05}s`;
-});
-
-window.addEventListener('scroll', revealOnScroll);
-window.addEventListener('load', revealOnScroll);
-
-// ============================================
-// 6. Section Title Animation
-// ============================================
-const sectionTitles = document.querySelectorAll('.section-title');
-
-const animateSectionTitles = () => {
-    sectionTitles.forEach(title => {
-        const titleTop = title.getBoundingClientRect().top;
-        const windowHeight = window.innerHeight;
-        
-        if (titleTop < windowHeight - 100) {
-            title.style.opacity = '1';
-            title.style.transform = 'translateY(0)';
+        // Sync GSAP ScrollTrigger with Lenis
+        if (typeof gsap !== 'undefined' && gsap.registerPlugin) {
+            gsap.registerPlugin(ScrollTrigger);
         }
-    });
-};
+    } catch (error) {
+        console.warn('Lenis initialization failed:', error);
+    }
 
-sectionTitles.forEach(title => {
-    title.style.opacity = '0';
-    title.style.transform = 'translateY(30px)';
-    title.style.transition = 'all 0.8s ease';
-});
+    // ============================================
+    // 3. FLOATING PARTICLES SYSTEM
+    // ============================================
+    function createParticles() {
+        if (prefersReducedMotion) return;
 
-window.addEventListener('scroll', animateSectionTitles);
-window.addEventListener('load', animateSectionTitles);
+        try {
+            const container = document.getElementById('particles');
+            if (!container) return;
 
-// ============================================
-// 7. Counter Animation for Stats with Glow Effect
-// ============================================
-const stats = document.querySelectorAll('.stat-number');
-let statsAnimated = false;
+            const particleCount = 50;
+            const particles = [];
 
-const animateStats = () => {
-    if (statsAnimated) return;
-    
-    const statsSection = document.querySelector('.about-stats');
-    if (!statsSection) return;
-    
-    const statsTop = statsSection.getBoundingClientRect().top;
-    const windowHeight = window.innerHeight;
-    
-    if (statsTop < windowHeight - 100) {
-        statsAnimated = true;
-        
-        stats.forEach((stat, index) => {
-            const target = parseInt(stat.textContent);
-            let current = 0;
-            const increment = target / 40;
-            const duration = 2000;
-            const stepTime = duration / 40;
-            
-            // Add glow effect
-            stat.parentElement.style.boxShadow = '0 0 30px rgba(99, 102, 241, 0.3)';
-            
-            const counter = setInterval(() => {
-                current += increment;
-                if (current >= target) {
-                    stat.textContent = target + '+';
-                    clearInterval(counter);
-                } else {
-                    stat.textContent = Math.floor(current) + '+';
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+
+                const size = Math.random() * 4 + 2;
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                const duration = Math.random() * 20 + 10;
+                const delay = Math.random() * 5;
+
+                particle.style.cssText = `
+                    width: ${size}px;
+                    height: ${size}px;
+                    left: ${x}%;
+                    top: ${y}%;
+                    opacity: ${Math.random() * 0.3 + 0.1};
+                `;
+
+                container.appendChild(particle);
+                particles.push({ element: particle, x, y, duration, delay });
+
+                // Animate particle
+                if (typeof gsap !== 'undefined') {
+                    gsap.to(particle, {
+                        x: 'random(-100, 100)',
+                        y: 'random(-100, 100)',
+                        duration: duration,
+                        repeat: -1,
+                        yoyo: true,
+                        ease: 'sine.inOut',
+                        delay: delay
+                    });
                 }
-            }, stepTime);
+            }
+        } catch (error) {
+            console.warn('Particle system initialization failed:', error);
+        }
+    }
+    createParticles();
+
+    // ============================================
+    // 4. MOUSE TRACKING FOR GLOW EFFECT
+    // ============================================
+    function trackMouse() {
+        try {
+            document.addEventListener('mousemove', (e) => {
+                const x = (e.clientX / window.innerWidth) * 100;
+                const y = (e.clientY / window.innerHeight) * 100;
+                document.documentElement.style.setProperty('--mouse-x', `${x}%`);
+                document.documentElement.style.setProperty('--mouse-y', `${y}%`);
+            }, { passive: true });
+        } catch (error) {
+            console.warn('Mouse tracking failed:', error);
+        }
+    }
+    trackMouse();
+
+    // ============================================
+    // 5. PRELOADER & HERO ANIMATION
+    // ============================================
+    try {
+        if (typeof gsap !== 'undefined') {
+            const tl = gsap.timeline();
+            tl.to(".loader-progress-fill", { width: "100%", duration: 1, ease: "power2.inOut" })
+                .to(".loader-content", { y: -50, opacity: 0, duration: 0.5, ease: "power2.in" })
+                .to(".preloader", { y: "-100%", duration: 0.8, ease: "power3.inOut" })
+                .add(() => { document.body.classList.remove('loading'); })
+                // Stagger Hero Content
+                .from(".hero-text .eyebrow", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, "-=0.2")
+                .from(".hero-title", { y: 30, opacity: 0, duration: 0.8, ease: "power3.out" }, "-=0.4")
+                .from(".hero-description", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, "-=0.4")
+                .from(".hero-actions .btn", { y: 20, opacity: 0, duration: 0.6, stagger: 0.1, ease: "power3.out" }, "-=0.4")
+                .from(".metric-chip", { y: 20, opacity: 0, duration: 0.6, stagger: 0.1, ease: "power3.out" }, "-=0.4")
+                .from(".profile-card", { scale: 0.9, opacity: 0, duration: 0.8, ease: "back.out(1.7)" }, "-=0.8")
+                .from(".floating-card", { scale: 0.8, opacity: 0, duration: 0.6, stagger: 0.2, ease: "back.out(1.7)" }, "-=0.6")
+                .add(() => { animateCounters(); animateTyping(); });
+        } else {
+            // Fallback if GSAP fails to load
+            document.body.classList.remove('loading');
+            document.querySelector('.preloader').style.display = 'none';
+        }
+    } catch (error) {
+        console.warn('GSAP animation failed:', error);
+        document.body.classList.remove('loading');
+        document.querySelector('.preloader').style.display = 'none';
+    }
+
+    // ============================================
+    // 6. CUSTOM CURSOR WITH ENHANCED EFFECTS
+    // ============================================
+    const cursorDot = document.querySelector('.cursor-dot');
+    const cursorOutline = document.querySelector('.cursor-outline');
+    if (cursorDot && cursorOutline && window.innerWidth > 768 && !prefersReducedMotion) {
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        }, { passive: true });
+
+        const hoverElements = document.querySelectorAll('a, button, .project-card, .feature-card, .metric-chip');
+        hoverElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursorOutline.classList.add('hover');
+                // Add magnetic effect for certain elements
+                if (el.classList.contains('magnetic')) {
+                    gsap.to(cursorOutline, { scale: 1.2, duration: 0.3 });
+                }
+            });
+            el.addEventListener('mouseleave', () => {
+                cursorOutline.classList.remove('hover');
+                gsap.to(cursorOutline, { scale: 1, duration: 0.3 });
+            });
         });
     }
-};
 
-window.addEventListener('scroll', animateStats);
-window.addEventListener('load', animateStats);
-
-// ============================================
-// 8. Mouse Move Parallax Effect - Disabled on Mobile
-// ============================================
-const heroSection = document.querySelector('.hero');
-
-if (heroSection && !isMobile()) {
-    heroSection.addEventListener('mousemove', (e) => {
-        const x = (window.innerWidth / 2 - e.pageX) / 60;
-        const y = (window.innerHeight / 2 - e.pageY) / 60;
-        
-        const profile = document.querySelector('.profile-placeholder');
-        if (profile) {
-            profile.style.transform = `translateX(${x}px) translateY(${y}px)`;
-        }
+    // ============================================
+    // 7. ENHANCED MAGNETIC ELEMENTS & 3D TILT
+    // ============================================
+    const magneticEls = document.querySelectorAll('.magnetic');
+    magneticEls.forEach(el => {
+        el.addEventListener('mousemove', (e) => {
+            if (prefersReducedMotion) return;
+            const bound = el.getBoundingClientRect();
+            const strength = el.dataset.strength || 20;
+            const x = ((e.clientX - bound.left) / el.offsetWidth) - 0.5;
+            const y = ((e.clientY - bound.top) / el.offsetHeight) - 0.5;
+            gsap.to(el, { 
+                x: x * strength, 
+                y: y * strength, 
+                duration: 0.6, 
+                ease: "power4.out" 
+            });
+        });
+        el.addEventListener('mouseleave', () => {
+            gsap.to(el, { 
+                x: 0, 
+                y: 0, 
+                duration: 0.8, 
+                ease: "elastic.out(1, 0.3)" 
+            });
+        });
     });
-}
 
-// ============================================
-// 9. Card Tilt Effect (3D Hover) - Disabled on Mobile
-// ============================================
-const cards = document.querySelectorAll('.osis-card, .project-card');
-
-cards.forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-        if (isMobile()) return; // Disable on mobile
-        
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        
-        const rotateX = (y - centerY) / 15;
-        const rotateY = (centerX - x) / 15;
-        
-        card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    const tiltEls = document.querySelectorAll('.tilt-effect');
+    tiltEls.forEach(el => {
+        el.addEventListener('mousemove', (e) => {
+            if (prefersReducedMotion) return;
+            const bound = el.getBoundingClientRect();
+            const x = (e.clientX - bound.left) / bound.width;
+            const y = (e.clientY - bound.top) / bound.height;
+            const tiltX = (y - 0.5) * -12; // Reduced tilt for smoother effect
+            const tiltY = (x - 0.5) * 12;
+            gsap.to(el, { 
+                rotateX: tiltX, 
+                rotateY: tiltY, 
+                duration: 0.4, 
+                ease: "power2.out" 
+            });
+        });
+        el.addEventListener('mouseleave', () => {
+            gsap.to(el, { 
+                rotateX: 0, 
+                rotateY: 0, 
+                duration: 0.6, 
+                ease: "power2.out" 
+            });
+        });
     });
-    
-    card.addEventListener('mouseleave', () => {
-        card.style.transform = 'perspective(800px) rotateX(0) rotateY(0)';
-    });
-});
 
-// ============================================
-// 10. Floating Particles Effect
-// ============================================
-function createParticles() {
-    const hero = document.querySelector('.hero');
-    if (!hero) return;
-    
-    const particleCount = 20;
-    
-    for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        
-        // Random properties
-        const size = Math.random() * 10 + 5;
-        const left = Math.random() * 100;
-        const top = Math.random() * 100;
-        const duration = Math.random() * 20 + 10;
-        const delay = Math.random() * 5;
-        
-        particle.style.cssText = `
-            position: absolute;
+    // ============================================
+    // 8. BUTTON RIPPLE EFFECT
+    // ============================================
+    function createRipple(event) {
+        if (prefersReducedMotion) return;
+        const button = event.currentTarget;
+        const ripple = document.createElement('span');
+        const rect = button.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = event.clientX - rect.left - size / 2;
+        const y = event.clientY - rect.top - size / 2;
+
+        ripple.style.cssText = `
             width: ${size}px;
             height: ${size}px;
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(236, 72, 153, 0.3));
-            border-radius: 50%;
-            left: ${left}%;
-            top: ${top}%;
-            animation: float ${duration}s ease-in-out ${delay}s infinite;
-            pointer-events: none;
-            z-index: 0;
+            left: ${x}px;
+            top: ${y}px;
         `;
-        
-        hero.appendChild(particle);
-    }
-}
+        ripple.classList.add('ripple');
 
-// Add particle animation keyframes
-const particleStyle = document.createElement('style');
-particleStyle.textContent = `
-    @keyframes float {
-        0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
-        10% { opacity: 1; }
-        90% { opacity: 1; }
-        100% { transform: translateY(-100vh) translateX(50px); opacity: 0; }
-    }
-`;
-document.head.appendChild(particleStyle);
+        button.appendChild(ripple);
 
-createParticles();
-
-// ============================================
-// 11. Active Navigation Based on Scroll
-// ============================================
-const sections = document.querySelectorAll('section');
-const navItems = document.querySelectorAll('.nav-links li a');
-
-window.addEventListener('scroll', () => {
-    let current = '';
-    
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        
-        if (scrollY >= sectionTop - 300) {
-            current = section.getAttribute('id');
-        }
-    });
-
-    navItems.forEach(li => {
-        li.classList.remove('active');
-        if (li.getAttribute('href').slice(1) === current) {
-            li.classList.add('active');
-        }
-    });
-});
-
-// ============================================
-// 12. Form Submission with Animation
-// ============================================
-const contactForm = document.getElementById('contactForm');
-
-if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-        const message = document.getElementById('message').value;
-        const submitBtn = contactForm.querySelector('button[type="submit"]');
-
-        // Add loading animation
-        const originalText = submitBtn.textContent;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
-        submitBtn.disabled = true;
-
-        if (name && email && message) {
-            // Simulate sending (replace with actual backend in production)
-            setTimeout(() => {
-                // Success animation
-                submitBtn.innerHTML = '<i class="fas fa-check"></i> Terkirim!';
-                submitBtn.style.background = 'linear-gradient(135deg, #10B981, #34D399)';
-                
-                alert(`Terima kasih, ${name}! Pesan Anda telah terkirim.\n\nKami akan menghubungi Anda di ${email} segera.`);
-                
-                // Reset form
-                contactForm.reset();
-                
-                // Reset button
-                setTimeout(() => {
-                    submitBtn.textContent = originalText;
-                    submitBtn.disabled = false;
-                    submitBtn.style.background = '';
-                }, 2000);
-                
-            }, 1500);
-        } else {
-            alert('Mohon lengkapi semua field yang wajib diisi!');
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
-        }
-    });
-}
-
-// ============================================
-// 13. Scroll Progress Indicator
-// ============================================
-function createScrollProgress() {
-    const progress = document.createElement('div');
-    progress.id = 'scroll-progress';
-    progress.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 0%;
-        height: 4px;
-        background: linear-gradient(90deg, #6366F1, #EC4899);
-        z-index: 1001;
-        transition: width 0.1s ease;
-    `;
-    document.body.appendChild(progress);
-}
-
-createScrollProgress();
-
-window.addEventListener('scroll', () => {
-    const scrollTop = document.documentElement.scrollTop;
-    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = (scrollTop / scrollHeight) * 100;
-    
-    const progressBar = document.getElementById('scroll-progress');
-    if (progressBar) {
-        progressBar.style.width = progress + '%';
-    }
-});
-
-// ============================================
-// 14. Cursor Trail Effect - Disabled on Mobile
-// ============================================
-if (!isMobile()) {
-    const cursorTrail = [];
-    const trailLength = 10;
-
-    for (let i = 0; i < trailLength; i++) {
-        const trail = document.createElement('div');
-        trail.className = 'cursor-trail';
-        trail.style.cssText = `
-            position: fixed;
-            width: ${10 - i}px;
-            height: ${10 - i}px;
-            background: rgba(99, 102, 241, ${0.5 - i * 0.05});
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            transition: transform 0.1s ease;
-        `;
-        document.body.appendChild(trail);
-        cursorTrail.push(trail);
-    }
-
-    let mouseX = 0, mouseY = 0;
-
-    document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-    });
-
-    function animateTrail() {
-        let x = mouseX, y = mouseY;
-        
-        cursorTrail.forEach((trail, i) => {
-            trail.style.left = x + 'px';
-            trail.style.top = y + 'px';
-            
-            const nextX = cursorTrail[i + 1] ? parseFloat(cursorTrail[i + 1].style.left) : x;
-            const nextY = cursorTrail[i + 1] ? parseFloat(cursorTrail[i + 1].style.top) : y;
-            
-            x += (nextX - x) * 0.3;
-            y += (nextY - y) * 0.3;
-        });
-        
-        requestAnimationFrame(animateTrail);
-    }
-
-    animateTrail();
-}
-
-// ============================================
-// 15. Smooth Page Load Animation
-// ============================================
-window.addEventListener('load', () => {
-    document.body.style.opacity = '1';
-    document.body.style.transition = 'opacity 0.5s ease';
-});
-
-document.body.style.opacity = '0';
-
-// ============================================
-// 16. Button Ripple Effect
-// ============================================
-const buttons = document.querySelectorAll('.btn');
-
-buttons.forEach(btn => {
-    btn.addEventListener('click', function(e) {
-        const rect = this.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        
-        const ripple = document.createElement('span');
-        ripple.style.cssText = `
-            position: absolute;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            pointer-events: none;
-            width: 100px;
-            height: 100px;
-            left: ${x - 50}px;
-            top: ${y - 50}px;
-            transform: scale(0);
-            animation: ripple 0.6s linear;
-        `;
-        
-        this.appendChild(ripple);
-        
         setTimeout(() => ripple.remove(), 600);
-    });
-});
-
-// Add ripple animation
-const rippleStyle = document.createElement('style');
-rippleStyle.textContent = `
-    @keyframes ripple {
-        to { transform: scale(4); opacity: 0; }
     }
-`;
-document.head.appendChild(rippleStyle);
 
-// ============================================
-// 17. Skill Bar Animation (if skills section exists)
-// ============================================
-const skillBars = document.querySelectorAll('.skill-progress');
+    const buttons = document.querySelectorAll('.btn');
+    buttons.forEach(btn => {
+        btn.addEventListener('click', createRipple);
+    });
 
-const animateSkillBars = () => {
-    skillBars.forEach(bar => {
-        const barTop = bar.getBoundingClientRect().top;
-        const windowHeight = window.innerHeight;
-        
-        if (barTop < windowHeight - 100) {
-            const width = bar.getAttribute('style').match(/width:\s*(\d+%)/);
-            if (width) {
-                bar.style.width = '0%';
-                setTimeout(() => {
-                    bar.style.transition = 'width 1.5s ease';
-                    bar.style.width = width[1];
-                }, 100);
+    // ============================================
+    // 9. ENHANCED BACKGROUND PARALLAX
+    // ============================================
+    if (!prefersReducedMotion) {
+        window.addEventListener('mousemove', throttle((e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            gsap.to('.shape-1', { 
+                x: x * 60, 
+                y: y * 60, 
+                duration: 1.5, 
+                ease: "power2.out" 
+            });
+            gsap.to('.shape-2', { 
+                x: x * -60, 
+                y: y * -60, 
+                duration: 1.5, 
+                ease: "power2.out" 
+            });
+        }, 50), { passive: true });
+    }
+
+    // ============================================
+    // 10. NAVBAR & SCROLL LOGIC
+    // ============================================
+    const navbar = document.querySelector('.navbar');
+    const sections = document.querySelectorAll('.section, .hero');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    const handleScroll = throttle(() => {
+        if (window.scrollY > 50) {
+            navbar.classList.add('is-scrolled');
+        } else {
+            navbar.classList.remove('is-scrolled');
+        }
+
+        let current = "";
+        sections.forEach(sec => {
+            const secTop = sec.offsetTop;
+            const secHeight = sec.clientHeight;
+            if (window.scrollY >= secTop - 200) {
+                current = sec.getAttribute('id');
             }
+        });
+
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
+    }, 100); // Throttle to run max once every 100ms
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Hamburger Menu
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.nav-links');
+    hamburger.addEventListener('click', () => {
+        const isOpen = navMenu.classList.toggle('is-open');
+        hamburger.setAttribute('aria-expanded', isOpen);
+    });
+    navLinks.forEach(link => link.addEventListener('click', () => {
+        navMenu.classList.remove('is-open');
+        hamburger.setAttribute('aria-expanded', 'false');
+    }));
+
+    // ============================================
+    // 11. SCROLL ANIMATIONS (GSAP)
+    // ============================================
+    if (!prefersReducedMotion) {
+        gsap.utils.toArray('.section-heading').forEach(heading => {
+            gsap.from(heading, {
+                scrollTrigger: { trigger: heading, start: "top 85%" },
+                y: 30, opacity: 0, duration: 0.8, ease: "power3.out"
+            });
+        });
+
+        const grids = ['.about-grid', '.osis-grid', '.projects-grid'];
+        grids.forEach(selector => {
+            const grid = document.querySelector(selector);
+            if (grid) {
+                gsap.from(grid.querySelectorAll('.stagger-item'), {
+                    scrollTrigger: { trigger: grid, start: "top 80%" },
+                    y: 40, opacity: 0, duration: 0.8, stagger: 0.15, ease: "power3.out"
+                });
+            }
+        });
+
+        // Animate Skill Bars
+        const skillsSection = document.querySelector('#skills');
+        if (skillsSection) {
+            ScrollTrigger.create({
+                trigger: skillsSection,
+                start: "top 75%",
+                onEnter: () => {
+                    const bars = document.querySelectorAll('.skill-bar-fill');
+                    bars.forEach(bar => {
+                        gsap.to(bar, { width: bar.dataset.width, duration: 1.5, ease: "power3.out" });
+                    });
+                },
+                once: true
+            });
+        }
+    } else {
+        // Skip animations for reduced motion
+        document.querySelectorAll('.stagger-item, .reveal').forEach(el => {
+            el.style.opacity = '1';
+            el.style.transform = 'none';
+        });
+    }
+
+    // ============================================
+    // 12. STATISTICS COUNTER
+    // ============================================
+    function animateCounters() {
+        if (prefersReducedMotion) {
+            document.querySelectorAll('.counter').forEach(counter => {
+                counter.textContent = counter.dataset.target;
+            });
+            return;
+        }
+        const counters = document.querySelectorAll('.counter');
+        counters.forEach(counter => {
+            const target = +counter.dataset.target;
+            gsap.to(counter, {
+                innerHTML: target,
+                duration: 2,
+                snap: { innerHTML: 1 },
+                ease: "power2.out",
+                onUpdate: function () {
+                    counter.innerHTML = Math.round(this.targets()[0].innerHTML);
+                }
+            });
+        });
+    }
+
+    // ============================================
+    // 13. TYPING ANIMATION
+    // ============================================
+    function animateTyping() {
+        if (prefersReducedMotion) {
+            const typingText = document.querySelector(".typing-text");
+            if (typingText) typingText.textContent = "Siswa SMK | Aktif Organisasi";
+            return;
+        }
+        const textArray = ["Siswa SMK", "Aktif Organisasi", "Siap Belajar"];
+        const typingText = document.querySelector(".typing-text");
+        let textIndex = 0;
+
+        function typeNext() {
+            const text = textArray[textIndex];
+            typingText.innerHTML = "";
+            let i = 0;
+            const typeInterval = setInterval(() => {
+                if (i < text.length) {
+                    typingText.innerHTML += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(typeInterval);
+                    setTimeout(() => {
+                        eraseText();
+                    }, 2000);
+                }
+            }, 100);
+        }
+
+        function eraseText() {
+            const text = textArray[textIndex];
+            let i = text.length;
+            const eraseInterval = setInterval(() => {
+                if (i > 0) {
+                    typingText.innerHTML = text.substring(0, i - 1);
+                    i--;
+                } else {
+                    clearInterval(eraseInterval);
+                    textIndex = (textIndex + 1) % textArray.length;
+                    setTimeout(() => {
+                        typeNext();
+                    }, 500);
+                }
+            }, 50);
+        }
+        typeNext();
+    }
+
+    // ============================================
+    // 14. MODALS LOGIC
+    // ============================================
+    const modalTriggers = document.querySelectorAll('.open-modal');
+    const modals = document.querySelectorAll('.modal-overlay');
+    const closeBtns = document.querySelectorAll('.close-modal');
+    let lastFocusedElement;
+
+    // Focus trap function for accessibility
+    function trapFocus(element) {
+        const focusableElements = element.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const firstFocusable = focusableElements[0];
+        const lastFocusable = focusableElements[focusableElements.length - 1];
+
+        element.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab') {
+                if (e.shiftKey) {
+                    if (document.activeElement === firstFocusable) {
+                        e.preventDefault();
+                        lastFocusable.focus();
+                    }
+                } else {
+                    if (document.activeElement === lastFocusable) {
+                        e.preventDefault();
+                        firstFocusable.focus();
+                    }
+                }
+            }
+            if (e.key === 'Escape') {
+                element.classList.remove('active');
+                lenis.start();
+                if (lastFocusedElement) lastFocusedElement.focus();
+            }
+        });
+    }
+
+    modalTriggers.forEach(trigger => {
+        trigger.addEventListener('click', (e) => {
+            e.preventDefault();
+            const modalId = trigger.dataset.modal;
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                lastFocusedElement = document.activeElement;
+                modal.classList.add('active');
+                lenis.stop(); // Stop scrolling while modal is open
+                
+                // Focus on close button for accessibility
+                const closeBtn = modal.querySelector('.close-modal');
+                if (closeBtn) closeBtn.focus();
+                
+                // Set up focus trap
+                trapFocus(modal);
+            }
+        });
+    });
+
+    closeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const modal = btn.closest('.modal-overlay');
+            modal.classList.remove('active');
+            lenis.start();
+            if (lastFocusedElement) lastFocusedElement.focus();
+        });
+    });
+
+    window.addEventListener('click', (e) => {
+        if (e.target.classList.contains('modal-overlay')) {
+            e.target.classList.remove('active');
+            lenis.start();
+            if (lastFocusedElement) lastFocusedElement.focus();
         }
     });
-};
 
-window.addEventListener('scroll', animateSkillBars);
-window.addEventListener('load', animateSkillBars);
-
-// ============================================
-// 18. Intersection Observer for Better Performance
-// ============================================
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('revealed');
-        }
+    // ============================================
+    // 15. BACK TO TOP & CURRENT YEAR
+    // ============================================
+    const backToTopBtn = document.getElementById('backToTop');
+    backToTopBtn.addEventListener('click', () => {
+        lenis.scrollTo(0);
     });
-}, observerOptions);
 
-document.querySelectorAll('.section, .osis-card, .project-card, .contact-item').forEach(el => {
-    observer.observe(el);
-});
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-// ============================================
-// 19. Keyboard Navigation Enhancement
-// ============================================
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        hamburger.classList.remove('active');
-        navLinks.classList.remove('active');
+    // ============================================
+    // 16. FORM SUBMISSION SIMULATION
+    // ============================================
+    const contactForm = document.getElementById('contactForm');
+    const formMessage = document.getElementById('formMessage');
+    if (contactForm) {
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = contactForm.querySelector('button');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Mengirim...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                formMessage.textContent = "Pesan berhasil dikirim!";
+                formMessage.style.color = "var(--success)";
+                contactForm.reset();
+                setTimeout(() => formMessage.textContent = "", 4000);
+            }, 1500);
+        });
     }
 });
-
-// ============================================
-// 20. Performance: Debounce Scroll Events
-// ============================================
-function debounce(func, wait = 10, immediate = true) {
-    let timeout;
-    return function() {
-        const context = this, args = arguments;
-        const later = function() {
-            timeout = null;
-            if (!immediate) func.apply(context, args);
-        };
-        const callNow = immediate && !timeout;
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-        if (callNow) func.apply(context, args);
-    };
-}
-
-// Apply debounce to scroll events
-window.addEventListener('scroll', debounce(() => {
-    // All scroll-based animations are handled here
-    revealOnScroll();
-    animateStats();
-    animateSectionTitles();
-}));
-
-// Console welcome message
-console.log('%c🎨 Portfolio Theme Modernized!', 'color: #6366F1; font-size: 20px; font-weight: bold;');
-console.log('%c✨ New animations and features added!', 'color: #EC4899; font-size: 14px;');
