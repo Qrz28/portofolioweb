@@ -409,21 +409,40 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-        // Animate Skill Bars
+        // Animate Skill Cards
         const skillsSection = document.querySelector('#skills');
         if (skillsSection) {
             ScrollTrigger.create({
                 trigger: skillsSection,
                 start: "top 75%",
                 onEnter: () => {
-                    const bars = document.querySelectorAll('.skill-bar-fill');
-                    bars.forEach(bar => {
-                        gsap.to(bar, { width: bar.dataset.width, duration: 1.5, ease: "power3.out" });
+                    const cards = document.querySelectorAll('.skill-card');
+                    cards.forEach((card, index) => {
+                        gsap.fromTo(card, 
+                            { y: 30, opacity: 0 },
+                            { y: 0, opacity: 1, duration: 0.6, delay: index * 0.1, ease: "power3.out" }
+                        );
                     });
                 },
                 once: true
             });
         }
+
+        // Animate Timeline Items
+        const timelineItems = document.querySelectorAll('.timeline-item');
+        timelineItems.forEach((item, index) => {
+            ScrollTrigger.create({
+                trigger: item,
+                start: "top 80%",
+                onEnter: () => {
+                    gsap.fromTo(item,
+                        { x: -30, opacity: 0 },
+                        { x: 0, opacity: 1, duration: 0.8, delay: index * 0.2, ease: "power3.out" }
+                    );
+                },
+                once: true
+            });
+        });
     } else {
         // Skip animations for reduced motion
         document.querySelectorAll('.stagger-item, .reveal').forEach(el => {
